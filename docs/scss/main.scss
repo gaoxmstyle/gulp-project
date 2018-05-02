@@ -6,7 +6,10 @@
 
 ul {
     li {
+        margin: 0 0 20px;
         font-size: 16px;
-        background-color: orange;
+        line-height: 1.2;
+        letter-spacing: 1px;
+        border: 1px solid #333;
     }
 }

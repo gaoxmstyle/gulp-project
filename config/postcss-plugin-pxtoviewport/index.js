@@ -13,7 +13,7 @@ const defaults = {
     propList: [],               // 某个属性 用于忽略转为vw  eg: ['font-size'] or ['font-size', 'margin*']  or ['font-size', 'margin*', '*-width'] or ['*position*']
     minPixelValue: 1,       // 最小像素限制
     mediaQuery: false, // 是否转换媒体查询
-    rootValue: 10,      // 转换为rem的基础字号
+    rootValue: 16,      // 转换为rem的基础字号
     toRem: false,       // 是否转换为rem
     toViewport: true    // 是否转换为vw 最好不要设置
 };
