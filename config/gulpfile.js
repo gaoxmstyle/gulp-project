@@ -27,6 +27,12 @@ gulp.task('sass', function(){
         return utils.convertToCss();
     });
 });
+// 处理html
+gulp.task('html', function(){
+    return watch(config.outDir + '*.html', function(){
+        return utils.watchHtml();
+    })
+});
 /**
  * ================= build =================
  */
@@ -57,7 +63,7 @@ gulp.task('clean-build', function () {
  *  =============== 运行 ======================
  */
 // 打开web服务: gulp
-gulp.task('default', ['compile', 'sass', 'serve']);
+gulp.task('default', ['serve', 'compile', 'sass', 'html']);
 
 // 打包编译：gulp build
 gulp.task('build', sequence(

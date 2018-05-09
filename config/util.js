@@ -22,13 +22,18 @@ const pxtovw = require('./postcss-plugin-pxtoviewport/index');
 const cleanCss = require('gulp-clean-css');
 const config = require('./config');
 // 配置文件
-const postcssPlugins = [autoprefixer(), pxtovw(config.pxtorem)];
+const postcssPlugins = [autoprefixer({ "browsers": ["iOS >= 7","Firefox >= 20","Android >= 4.0"]}), pxtovw(config.pxtorem)];
 
 module.exports = {
     serve: function () {
         return browserSync.init({
             server: config.outDir
         });
+    },
+    watchHtml: function(){
+        return gulp.src(config.outDir + '*.html')
+            .pipe(changed(config.outDir + "*.html", { extension: ".html", hasChanged: changed.compareLastModifiedTime }))
+            .pipe(reload({stream: true}));
     },
     // 转css
     convertToCss: function () {
@@ -44,7 +49,7 @@ module.exports = {
             }))
             .pipe(postcss(postcssPlugins))
             .pipe(gulp.dest(config.outDir + 'css'))
-            .pipe(reload({ stream: true }));
+            .on('end', reload);
     },
     // 转Js
     convertToJs: function () {
