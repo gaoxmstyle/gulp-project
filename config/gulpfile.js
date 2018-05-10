@@ -22,7 +22,6 @@ gulp.task('compile', function(){ utils.convertToJs();
 
 // 处理sass
 gulp.task('sass', function(){
-    utils.convertToCss();
     return watch(config.rootDir + 'scss/*.scss', function(){
         return utils.convertToCss();
     });
