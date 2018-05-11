@@ -18,18 +18,20 @@ const sass = require('gulp-sass');
 const postcss = require('gulp-postcss');
 const autoprefixer = require('autoprefixer');
 const base64 = require('gulp-base64');
-const pxtovw = require('./postcss-plugin-pxtoviewport/index');
+const pxtovw = require('postcss-plugin-pxtoviewport');
 const cleanCss = require('gulp-clean-css');
 const config = require('./config');
 // 配置文件
 const postcssPlugins = [autoprefixer({ "browsers": ["iOS >= 7","Firefox >= 20","Android >= 4.0"]}), pxtovw(config.pxtorem)];
 
 module.exports = {
+    // 启动服务
     serve: function () {
         return browserSync.init({
             server: config.outDir
         });
     },
+    // 观察html
     watchHtml: function(){
         return gulp.src(config.outDir + '*.html')
             .pipe(changed(config.outDir + "*.html", { extension: ".html", hasChanged: changed.compareLastModifiedTime }))
@@ -72,14 +74,14 @@ module.exports = {
     // 合并压缩Js库
     concatJs: function () {
         return gulp.src(config.outDir + 'lib/js/*.js')
-            .pipe(concat('libs.min.js'))
+            .pipe(concat('vendor.min.js'))
             .pipe(uglify())
             .pipe(gulp.dest(config.distDir + 'lib/js'));
     },
     // 合并压缩Css库
     concatCss: function () {
         return gulp.src(config.outDir + 'lib/css/*.css')
-            .pipe(concat('libs.min.css'))
+            .pipe(concat('vendor.min.css'))
             .pipe(cleanCss())
             .pipe(gulp.dest(config.distDir + 'lib/css'));
     },
@@ -95,7 +97,7 @@ module.exports = {
         return gulp.src(config.outDir + 'css/*.css')
             .pipe(concat('main.min.css'))
             .pipe(cleanCss({compatibility: 'ie8'}))
-            .pipe(replace(/_VERSION_/gi, date))
+            .pipe(replace(/_VERSION_/gi, config.date))
             .pipe(gulp.dest(config.distDir + 'css'));
     },
     // 处理html
@@ -111,7 +113,6 @@ module.exports = {
     // 清除文件
     cleanBuild: function () {
         return gulp.src(config.distDir)
-            .pipe(clean({force: true}))
-            .pipe(gulp.dest(config.distDir));
+            .pipe(clean({force: true}));
     }
 };
