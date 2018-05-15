@@ -31,9 +31,21 @@ module.exports = {
             server: config.outDir
         });
     },
-    // 观察html
+    // 审查css库
+    watchCss: function(){
+        return gulp.src(config.outDir + 'lib/css/*.css')
+            .pipe(changed(config.outDir, {extension: '.css', hasChanged: changed.compareLastModifiedTime}))
+            .pipe(gulp.dest(config.outDir + 'lib/css'));
+    },
+    // 审查js库
+    watchVendor: function(){
+        return gulp.src(config.rootDir + 'lib/js/*.js')
+            .pipe(changed(config.outDir, {extension: '.js', hasChanged: changed.compareLastModifiedTime}))
+            .pipe(gulp.dest(config.outDir + 'lib/js'));
+    },
+    // 审查html
     watchHtml: function(){
-        return gulp.src(config.rootDir + 'html/*.html')
+        return gulp.src(config.rootDir + '*.html')
             .pipe(plumber({
                 errorHandler: notify.onError("Error: <%= error.message %>")
             }))
@@ -79,6 +91,9 @@ module.exports = {
     concatJs: function () {
         return gulp.src(config.outDir + 'lib/js/*.js')
             .pipe(concat('vendor.min.js'))
+            .pipe(babel({
+                presets: ['es2015']
+            }))
             .pipe(uglify())
             .pipe(gulp.dest(config.distDir + 'lib/js'));
     },

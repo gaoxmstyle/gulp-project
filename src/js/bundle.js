@@ -91,7 +91,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     var Child = function Child() {
         _classCallCheck(this, Child);
 
-        console.log('child');
+        console.log('child 123');
+        if (window.hzShare) {
+            hzShare({
+                title: '默认分享标题',
+                desc: '默认分享描述',
+                link: window.location.href,
+                imgUrl: ''
+            });
+        }
     };
 
     /* harmony default export */

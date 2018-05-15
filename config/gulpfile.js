@@ -26,11 +26,19 @@ gulp.task('sass', function(){
         return utils.convertToCss();
     });
 });
+
 // 处理html
 gulp.task('html', function(){
-    return watch(config.rootDir + 'html/*.html', function(){
+    return watch(config.rootDir + '*.html', function(){
         return utils.watchHtml();
     })
+});
+
+// 审查js库
+gulp.task('vendor', function(){
+    return watch(config.rootDir + 'lib/js/*.js', function(){
+        return utils.watchVendor();
+    });
 });
 /**
  * ================= build =================
@@ -62,7 +70,7 @@ gulp.task('clean-build', function () {
  *  =============== 运行 ======================
  */
 // 打开web服务: gulp
-gulp.task('default', ['serve', 'compile', 'sass', 'html']);
+gulp.task('default', ['serve', 'compile', 'sass', 'html', 'vendor']);
 
 // 打包编译：gulp build
 gulp.task('build', sequence(
