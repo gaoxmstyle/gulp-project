@@ -14,7 +14,7 @@ gulp.task('serve', function(){
 });
 
 // 编译babel
-gulp.task('compile', function(){ utils.convertToJs();
+gulp.task('compile', function(){ 
     return watch(config.rootDir + 'js/*.js', function(){
         return utils.convertToJs();
     });
