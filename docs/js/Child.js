@@ -1,6 +1,6 @@
 class Child {
     constructor(){
-        console.log('child');
+        console.log('child'); 
     }
 }   
 
