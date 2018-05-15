@@ -28,7 +28,7 @@ gulp.task('sass', function(){
 });
 // 处理html
 gulp.task('html', function(){
-    return watch(config.outDir + '*.html', function(){
+    return watch(config.rootDir + 'html/*.html', function(){
         return utils.watchHtml();
     })
 });

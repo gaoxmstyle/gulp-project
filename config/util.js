@@ -33,9 +33,13 @@ module.exports = {
     },
     // 观察html
     watchHtml: function(){
-        return gulp.src(config.outDir + '*.html')
-            .pipe(changed(config.outDir + "*.html", { extension: ".html", hasChanged: changed.compareLastModifiedTime }))
-            .pipe(reload({stream: true}));
+        return gulp.src(config.rootDir + 'html/*.html')
+            .pipe(plumber({
+                errorHandler: notify.onError("Error: <%= error.message %>")
+            }))
+            .pipe(changed(config.outDir, {extension: '.html', hasChanged: changed.compareLastModifiedTime}))
+            .pipe(gulp.dest(config.outDir))
+            .pipe(reload({ stream: true }));
     },
     // 转css
     convertToCss: function () {
