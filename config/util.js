@@ -24,6 +24,10 @@ const config = require('./config');
 // 配置文件
 const postcssPlugins = [autoprefixer({ "browsers": ["iOS >= 7","Firefox >= 20","Android >= 4.0"]}), pxtovw(config.pxtorem)];
 
+if(config.cdn){
+    config.distUrl = config.cdn;
+}
+
 module.exports = {
     // 启动服务
     serve: function () {
