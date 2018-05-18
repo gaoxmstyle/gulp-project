@@ -10,7 +10,7 @@ module.exports = {
     outDir: '../src/',
     distDir: '../dist/',
     distUrl: './',
-    cdn: 'www.baidu.com/',
+    cdn: '',
     date: new Date().getTime(),
     name: 'gulp'
 };

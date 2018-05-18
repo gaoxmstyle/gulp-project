@@ -10,6 +10,8 @@ const uglify = require("gulp-uglify");
 const processhtml = require('gulp-processhtml');
 const replace = require('gulp-replace');
 const clean = require('gulp-clean');
+const del = require('del');
+const debug = require('gulp-debug');
 // 处理es2016 es2017
 const babel = require('gulp-babel');
 // 处理sass
@@ -35,17 +37,19 @@ module.exports = {
             server: config.outDir
         });
     },
-    // 审查css库
-    watchCss: function(){
-        return gulp.src(config.outDir + 'lib/css/*.css')
-            .pipe(changed(config.outDir, {extension: '.css', hasChanged: changed.compareLastModifiedTime}))
-            .pipe(gulp.dest(config.outDir + 'lib/css'));
-    },
-    // 审查js库
+    // 审查库
     watchVendor: function(){
-        return gulp.src(config.rootDir + 'lib/js/*.js')
-            .pipe(changed(config.outDir, {extension: '.js', hasChanged: changed.compareLastModifiedTime}))
-            .pipe(gulp.dest(config.outDir + 'lib/js'));
+        return gulp.src(config.rootDir + 'lib/**/*')
+            .pipe(gulp.dest(config.outDir + 'lib'))
+            .pipe(debug());
+    },
+    // 审查资源
+    watchAssets: function(){
+        del([config.outDir + 'assets'], {force: true}).then((paths) => {
+            return gulp.src(config.rootDir + 'assets/**/*')
+                .pipe(gulp.dest(config.outDir + 'assets'))
+                .pipe(debug());
+        });
     },
     // 审查html
     watchHtml: function(){
@@ -55,7 +59,8 @@ module.exports = {
             }))
             .pipe(changed(config.outDir, {extension: '.html', hasChanged: changed.compareLastModifiedTime}))
             .pipe(gulp.dest(config.outDir))
-            .pipe(reload({ stream: true }));
+            .pipe(reload({ stream: true }))
+            .pipe(debug());
     },
     // 转css
     convertToCss: function () {
@@ -131,7 +136,13 @@ module.exports = {
             .pipe(replace(/href=\"css/gi, 'href=\"' + config.distUrl + 'css'))
             .pipe(replace(/src=\"lib/gi, 'src=\"'+ config.distUrl +'lib'))
             .pipe(replace(/src=\"js/gi, 'src=\"'+ config.distUrl +'js'))
+            .pipe(replace(/src=\"assets/gi, 'src=\"'+ config.distUrl +'assets'))
             .pipe(gulp.dest(config.distDir))
+    },
+    // copy资源
+    assetsHandler: function(){
+        return gulp.src(config.outDir + 'assets/**/*')
+            .pipe(gulp.dest(config.distDir + 'assets'))
     },
     // 清除文件
     cleanBuild: function () {

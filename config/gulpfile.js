@@ -34,10 +34,17 @@ gulp.task('html', function(){
     })
 });
 
-// 审查js库
+// 审查 拷贝库
 gulp.task('vendor', function(){
-    return watch(config.rootDir + 'lib/js/*.js', function(){
+    return watch(config.rootDir + 'lib/**/*.*', function(){
         return utils.watchVendor();
+    });
+});
+
+// 审查 拷贝资源
+gulp.task('assets', function(){
+    return watch(config.rootDir + 'assets/**/*.*', function(){
+        return utils.watchAssets();
     });
 });
 /**
@@ -63,14 +70,19 @@ gulp.task('html-handler', function () {
     return utils.htmlHandler();
 });
 
+gulp.task('copy-assets', function(){
+    return utils.assetsHandler();
+});
+
 gulp.task('clean-build', function () {
     return utils.cleanBuild();
 });
+
 /**
  *  =============== 运行 ======================
  */
 // 打开web服务: gulp
-gulp.task('default', ['serve', 'compile', 'sass', 'html', 'vendor']);
+gulp.task('default', ['serve', 'compile', 'sass', 'html', 'vendor', 'assets']);
 
 // 打包编译：gulp build
 gulp.task('build', sequence(
@@ -79,5 +91,6 @@ gulp.task('build', sequence(
     'concat-css',
     'minify-js',
     'minify-css',
-    'html-handler'
+    'html-handler',
+    'copy-assets'
 ));
